@@ -8,7 +8,7 @@ const PaletteView = ({item, handlePress}) => {
             <Text style={styles.text}>{item.paletteName}</Text>
             <FlatList 
             style = {styles.container}
-                data = {item.COLORS.slice(0,Math.min(5, item.COLORS.length))}
+                data = {item.colors.slice(0,Math.min(5, item.colors.length))}
                 keyExtractor={(item, ind) => (ind)}
                 renderItem={({item}) => (
                     <View style={[{backgroundColor: item.hexCode}, styles.colorbox]}></View>
@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: "bold",
         fontSize: 15,
-        marginTop: 10
+        marginTop: 10,
+        marginHorizontal: 10,
     },
 
     container: {

@@ -6,13 +6,13 @@ import ColorBox from '../components/ColorBox';
 
 const ColorPalette = ({route}) => {
     //console.log("route.params");
-    const COLORS = route.params.COLORS;
+    const colors = route.params.colors;
   return (
     <View style = {styles.container}>
     <Text style = {styles.header}>{route.params.paletteName}</Text>
     {/* <ColorBox colorName="Cyan" hexCode={"#2aa198"}/> */}
     <FlatList
-      data={COLORS}
+      data={colors}
       keyExtractor={(item, index) => (index)}
       renderItem={(data) => (<ColorBox colorName={data.item.colorName} hexCode={data.item.hexCode}/>)}
     />

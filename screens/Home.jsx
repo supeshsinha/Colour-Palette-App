@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import PaletteView from '../components/PaletteView';
 
@@ -37,14 +37,25 @@ const SOLARIZED = [
     { colorName: 'Orange', hexCode: '#e66225' },
   ];
 
-  const pallets = [
-    {paletteName: "Solarized", COLORS : SOLARIZED},
-    {paletteName: "Rainbow", COLORS : RAINBOW},
-    {paletteName: "Frontend Masters", COLORS : FRONTEND_MASTERS},
-  ]
+
+
 
 
 const Home = ({navigation}) => {
+
+  const [pallets, setPallets] = useState([]);
+
+  const fetchColors = useCallback(async() => {
+    const res = await fetch("https://color-palette-api.kadikraman.now.sh/palettes");
+
+    if(res.ok){
+      const fcolours = await res.json();
+      setPallets(fcolours);
+    }
+  }, [])
+
+  useEffect(() => {fetchColors()}, []);
+
   return (
     <FlatList
       data = {pallets}
