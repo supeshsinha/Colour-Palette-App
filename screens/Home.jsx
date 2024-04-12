@@ -1,9 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import PaletteView from '../components/PaletteView';
+import style from '../css/common';
 
 
-const Home = ({navigation}) => {
+const Home = ({navigation, route}) => {
+
+  console.log("hihi");
+
+  const newPalette = route.params? route.params: null;
+  console.log(newPalette);
 
   const [pallets, setPallets] = useState([]);
 
@@ -11,24 +17,37 @@ const Home = ({navigation}) => {
     const res = await fetch("https://color-palette-api.kadikraman.now.sh/palettes");
 
     if(res.ok){
-      const fcolours = await res.json();
+      let fcolours = await res.json(); 
       setPallets(fcolours);
     }
   }, [])
+  useEffect(() => {
+    fetchColors();
+    
+  }, []);
 
-  useEffect(() => {fetchColors()}, []);
+  useEffect(() => {
+    if(newPalette){
+      setPallets([newPalette, ...pallets]);
+    }
+  }, [newPalette]);
 
   return (
-    <FlatList
-      data = {pallets}
-      keyExtractor={(item) => (item.paletteName)}
-      renderItem={({item}) => (
-        <PaletteView 
-          item={item}
-          handlePress={() => {navigation.navigate("ColorPalette", item)}}
-          />
-      )} 
-    />
+    <>
+      <TouchableOpacity onPress={() => {navigation.navigate("AddNewPalette")}}>
+        <View><Text style={style.button}>Add New Palette</Text></View>
+      </TouchableOpacity>
+      <FlatList
+        data = {pallets}
+        keyExtractor={(item) => (item.paletteName)}
+        renderItem={({item}) => (
+          <PaletteView 
+            item={item}
+            handlePress={() => {navigation.navigate("ColorPalette", item)}}
+            />
+            )} 
+            />
+    </>
 
   )
 }
